@@ -1,57 +1,47 @@
-# tests/test_personaje.py
-
 import unittest
+import math
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from personajes.personaje import Personaje
-
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from src.personaje import Personaje
 
 class TestPersonaje(unittest.TestCase):
+
     def setUp(self):
-        self.personaje = Personaje(100, 20, 10, 1)
+        self.personaje = Personaje(puntos_de_vida=10, ataque=3, defensa=2, nivel=1, x=50, y=50)
 
-    def test_posicion_actual(self):
-        self.assertEqual(self.personaje.posicion_actual(), (0, 0))
-
-    def test_atacar(self):
-        enemigo = Personaje(50, 15, 5, 1)
-        self.personaje.atacar(enemigo)
-        self.assertEqual(enemigo.puntos_de_vida, 35)
+    def test_mover(self):
+        self.personaje.mover('arriba')
+        self.assertEqual(self.personaje.posicion_actual(), (50, 49.62))
 
     def test_recibir_ataque(self):
-        self.personaje.recibir_ataque(25)
-        self.assertEqual(self.personaje.puntos_de_vida, 85)
+        self.personaje.recibir_ataque(3)
+        self.assertEqual(self.personaje.puntos_de_vida, 7)
+
+    def test_atacar(self):
+        enemigo = Personaje(puntos_de_vida=5, ataque=2, defensa=1, nivel=1, x=50, y=50)
+        self.personaje.atacar(enemigo)
+        self.assertEqual(enemigo.puntos_de_vida, 2)
 
     def test_recolectar(self):
-        objeto = "espada"
-        self.personaje.recolectar(objeto)
-        self.assertIn(objeto, self.personaje.inventario)
+        self.personaje.recolectar('Flecha')
+        self.assertIn('Flecha', self.personaje.inventario)
 
     def test_usar(self):
-        objeto = MockObjeto()
-        self.personaje.recolectar(objeto)
-        self.personaje.usar(objeto)
-        self.assertNotIn(objeto, self.personaje.inventario)
+        self.personaje.recolectar('pocion')
+        self.personaje.usar('pocion')
+        self.assertEqual(self.personaje.puntos_de_vida, 15)
 
     def test_vender(self):
-        objeto = MockObjeto()
-        self.personaje.recolectar(objeto)
-        self.personaje.vender(objeto)
-        self.assertNotIn(objeto, self.personaje.inventario)
+        self.personaje.recolectar('Flecha')
+        self.personaje.vender('Flecha')
+        self.assertNotIn('Flecha', self.personaje.inventario)
 
     def test_subir_nivel(self):
-        self.personaje.subir_nivel({'ataque': 5, 'defensa': 3})
+        self.personaje.subir_nivel({'ataque': 2, 'defensa': 3})
         self.assertEqual(self.personaje.nivel, 2)
-        self.assertEqual(self.personaje.ataque, 25)
-        self.assertEqual(self.personaje.defensa, 13)
+        self.assertEqual(self.personaje.ataque, 5)
+        self.assertEqual(self.personaje.defensa, 5)
 
-class MockObjeto:
-    def usar(self, personaje):
-        pass
-
-    def vender(self):
-        pass
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

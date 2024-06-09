@@ -1,14 +1,9 @@
-# tests/test_objeto.py
-
 import unittest
 import sys
 import os
-
-# Asegura que el directorio src está en el path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from objetos.objeto import Objeto
-from personajes.personaje import Personaje
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from src.objeto import Objeto
+from src.personaje import Personaje
 
 class MockVendedor:
     def __init__(self):

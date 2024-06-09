@@ -1,5 +1,3 @@
-# src/escenarios/escenario.py
-
 class Escenario:
     def __init__(self, territorio, areas, ubicacion_enemigos=None, ubicacion_objetos=None, vendedor=None):
         self.territorio = territorio

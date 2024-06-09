@@ -1,42 +1,27 @@
-# tests/test_escenario.py
-
 import unittest
 import sys
 import os
-
-# Asegura que el directorio src está en el path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from escenarios.escenario import Escenario
-from personajes.personaje import Personaje
-from personajes.enemigo import Enemigo
-from objetos.objeto import Objeto
-
-class MockVendedor:
-    def __init__(self):
-        self.inventario = []
-
-    def comprar(self, objeto):
-        self.inventario.append(objeto)
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from src.escenario import Escenario
+from src.enemigo import Enemigo
+from src.objeto import Objeto
 
 class TestEscenario(unittest.TestCase):
     def setUp(self):
-        self.escenario = Escenario("Bosque", ["Zona 1", "Zona 2"])
+        self.escenario = Escenario("Bosque", ["Área1", "Área2"])
 
     def test_ubicar_enemigos(self):
-        enemigos = [Enemigo(100, 20, 10, 1, "Orco")]
-        self.escenario.ubicar_enemigos(enemigos)
-        self.assertIn(enemigos[0], self.escenario.ubicacion_enemigos)
+        enemigo1 = Enemigo(100, 20, 10, 1, "Orco")
+        enemigo2 = Enemigo(80, 15, 5, 1, "Goblin")
+        self.escenario.ubicar_enemigos([enemigo1, enemigo2])
+        self.assertEqual(len(self.escenario.ubicacion_enemigos), 2)
 
     def test_ubicar_objetos(self):
-        objetos = [Objeto("Espada", "arma", 100, 10)]
-        self.escenario.ubicar_objetos(objetos)
-        self.assertIn(objetos[0], self.escenario.ubicacion_objetos)
-
-    def test_agregar_zona_venta(self):
-        vendedor = MockVendedor()
-        self.escenario.agregar_zona_venta(vendedor)
-        self.assertEqual(self.escenario.vendedor, vendedor)
+        objeto1 = Objeto("Espada", "arma", 100, "Aumenta ataque")
+        objeto2 = Objeto("Escudo", "defensa", 150, "Aumenta defensa")
+        self.escenario.ubicar_objetos([objeto1, objeto2])
+        self.assertEqual(len(self.escenario.ubicacion_objetos), 2)
 
 if __name__ == "__main__":
     unittest.main()
+

@@ -1,5 +1,3 @@
-# src/objetos/objeto.py
-
 class Objeto:
     def __init__(self, nombre, tipo, valor, efecto):
         self.nombre = nombre
